@@ -37,8 +37,7 @@ class Auth(object):
         request = urllib2.Request(url, data, headers=headers)
         if method:
             request.get_method = lambda: method
-        response = urllib2.urlopen(request)
-        return response
+        return urllib2.urlopen(request)
 
     def create(self, username, password):
         data = {
@@ -90,10 +89,7 @@ class Bucket(object):
         self.appname = appname
         self.bucket = bucket
         self.auth_token = auth_token
-        if clientid:
-            self.clientid = clientid
-        else:
-            self.clientid = 'py-%s' % uuid.uuid4().hex
+        self.clientid = clientid if clientid else 'py-%s' % uuid.uuid4().hex
 
     def _auth_header(self):
         headers = {'X-Simperium-Token': '%s' % self.auth_token}
